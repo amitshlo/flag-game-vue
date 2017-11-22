@@ -10,7 +10,6 @@ export default {
   props: ['initTop', 'initLeft', 'controls', 'arenaSize', 'color'],
   data () {
     return {
-      size: 30,
       plStyle: {
         top: this.initTop,
         left: this.initLeft,
@@ -64,7 +63,7 @@ export default {
         clearInterval(this.intervalId)
       }
 
-      this.$emit('moved', { newTop, newLeft, size })
+      this.$emit('moved', { newTop, newLeft, size, color: this.color })
     }
   },
   computed: {

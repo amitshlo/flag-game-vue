@@ -2,7 +2,10 @@
   <div>
     <h2>Capture the flag!</h2>
     <div class="arena" v-bind:style="arenaSize">
-      <div class="flag"></div>
+      <vue-flag v-for="flag in flags"
+        v-bind:flagStyle="flag"
+        :key="flag.id">
+      </vue-flag>
       <vue-player 
         v-bind:initTop="'50px'" 
         v-bind:initLeft="'100px'"
@@ -25,6 +28,7 @@
 
 <script>
 import Player from './Player'
+import Flag from './Flag'
 
 export default {
   name: 'Arena',
@@ -33,7 +37,11 @@ export default {
       arenaSize: {
         width: '400px',
         height: '400px'
-      }
+      },
+      flags: [
+        {id: 1, top: 50, left: 100, color: 'gray'},
+        {id: 2, top: 200, left: 250, color: 'gray'}
+      ]
     }
   },
   created: function () {},
@@ -50,7 +58,8 @@ export default {
     }
   },
   components: {
-    'vue-player': Player
+    'vue-player': Player,
+    'vue-flag': Flag
   }
 }
 </script>
@@ -68,14 +77,5 @@ export default {
   .arena {
       position: relative;
       background: #cdcdcd;
-  }
-
-  .flag {
-      position: absolute;
-      width:50px;
-      height:50px;
-      background: #484848;
-      left: 100px;
-      top: 50px;
   }
 </style>
