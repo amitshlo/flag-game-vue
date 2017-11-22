@@ -63,6 +63,8 @@ export default {
       } else {
         clearInterval(this.intervalId)
       }
+
+      this.$emit('moved', { newTop, newLeft, size })
     }
   },
   computed: {

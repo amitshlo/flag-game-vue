@@ -8,14 +8,16 @@
         v-bind:initLeft="'100px'"
         v-bind:color="'blue'"
         v-bind:arenaSize="arenaSize"
-        v-bind:controls="['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft']">
+        v-bind:controls="['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft']"
+        v-on:moved="moved">
       </vue-player>
       <vue-player 
         v-bind:initTop="'200px'" 
         v-bind:initLeft="'300px'"
         v-bind:color="'green'"
         v-bind:arenaSize="arenaSize"
-        v-bind:controls="['KeyW', 'KeyD', 'KeyS', 'KeyA']">
+        v-bind:controls="['KeyW', 'KeyD', 'KeyS', 'KeyA']"
+        v-on:moved="moved">
       </vue-player>
     </div>
   </div>
@@ -23,7 +25,6 @@
 
 <script>
 import Player from './Player'
-import IntersectService from '../services/intersect'
 
 export default {
   name: 'Arena',
@@ -35,12 +36,19 @@ export default {
       }
     }
   },
-  created: function () {
-    let x = new IntersectService()
-    console.log(x)
-    x.setRectnagles(['lalal'])
+  created: function () {},
+  methods: {
+    moved: function (event) {
+      var flagTop = 50
+      var flagLeft = 100
+      var flagSize = 50
+      if (event.newTop > flagTop && event.newLeft > flagLeft &&
+        (flagLeft + flagSize) > (event.newLeft + event.size) &&
+        (flagTop + flagSize) > (event.newTop + event.size)) {
+        console.log('on it!')
+      }
+    }
   },
-  methods: {},
   components: {
     'vue-player': Player
   }
