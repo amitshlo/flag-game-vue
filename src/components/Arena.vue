@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <h2>Capture the flag!</h2>
     <div class="arena" v-bind:style="arenaSize">
       <vue-flag v-for="flag in flags"
@@ -103,16 +103,19 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  h1, h2 {
+  h2 {
     font-weight: normal;
   }
 
-  a {
-    color: #42b983;
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .arena {
-      position: relative;
-      background: #cdcdcd;
+
+    position: relative;
+    background: #cdcdcd;
   }
 </style>

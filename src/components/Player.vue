@@ -41,7 +41,7 @@ export default {
         this.key = event.code
       }
       clearInterval(this.intervalId)
-      this.intervalId = setInterval(this.movePlayer, 10)
+      this.intervalId = setInterval(this.movePlayer, 7)
     },
     movePlayer: function () {
       switch (this.key) {
