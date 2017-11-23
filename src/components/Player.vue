@@ -22,16 +22,17 @@ export default {
     }
   },
   created: function () {
-    window.addEventListener('keydown', this.run)
     if (!this.human) {
       let stInterval
       setInterval(() => {
         clearInterval(stInterval)
-        let moveDir = this.strategy.getMoveDir()
+        let moveDir = this.strategy.getMoveDir(this.$refs.player.offsetTop, this.$refs.player.offsetLeft)
         stInterval = setInterval(() => {
           this.move(this.$refs.player, moveDir.top, moveDir.left)
-        }, 10)
+        }, moveDir.rh)
       }, this.strategy.getAskTime())
+    } else {
+      window.addEventListener('keydown', this.run)
     }
   },
   methods: {

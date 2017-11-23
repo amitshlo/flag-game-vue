@@ -11,7 +11,7 @@ export class AIStupidStrategy {
       top = this.getRandNumber()
       left = this.getRandNumber()
     }
-    return {top, left}
+    return {top, left, rh: 10}
   }
 
   getRandNumber () {

@@ -10,7 +10,7 @@
       <vue-player 
         v-bind:initTop="'50px'" 
         v-bind:initLeft="'100px'"
-        v-bind:color="'blue'"
+        v-bind:color="'pink'"
         v-bind:controls="['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft']"
         v-bind:rules="rules"
         v-bind:human="true"
@@ -19,11 +19,29 @@
       <vue-player 
         v-bind:initTop="'200px'" 
         v-bind:initLeft="'300px'"
-        v-bind:color="'green'"
+        v-bind:color="'blue'"
         v-bind:controls="['KeyW', 'KeyD', 'KeyS', 'KeyA']"
+        v-bind:rules="rules"
+        v-bind:human="true"
+        v-bind:strategy="strategies[0]"
+        v-on:hit="hit">
+      </vue-player>
+      <vue-player 
+        v-bind:initTop="'200px'" 
+        v-bind:initLeft="'300px'"
+        v-bind:color="'green'"
         v-bind:rules="rules"
         v-bind:human="false"
         v-bind:strategy="strategies[0]"
+        v-on:hit="hit">
+      </vue-player>
+      <vue-player 
+        v-bind:initTop="'200px'" 
+        v-bind:initLeft="'300px'"
+        v-bind:color="'orange'"
+        v-bind:rules="rules"
+        v-bind:human="false"
+        v-bind:strategy="strategies[1]"
         v-on:hit="hit">
       </vue-player>
     </div>
@@ -35,6 +53,7 @@ import Player from './Player'
 import Flag from './Flag'
 import { Rules } from '../services/rules'
 import { AIStupidStrategy } from '../services/strategies/ai-stupid'
+import { AISmartStrategy } from '../services/strategies/ai-smart'
 
 var arena = 400
 
@@ -48,15 +67,19 @@ export default {
       },
       flags: [
         {id: 1, top: 50, left: 100, color: 'gray'},
-        {id: 2, top: 200, left: 250, color: 'gray'}
+        {id: 2, top: 200, left: 250, color: 'gray'},
+        {id: 3, top: 100, left: 70, color: 'gray'},
+        {id: 4, top: 300, left: 50, color: 'gray'}
       ],
-      strategies: [
-        new AIStupidStrategy()
-      ],
+      strategies: [],
       rules: undefined
     }
   },
   created: function () {
+    this.strategies = [
+      new AIStupidStrategy(),
+      new AISmartStrategy(this.flags)
+    ]
     this.rules = new Rules(arena, this.flags, 50)
   },
   methods: {
