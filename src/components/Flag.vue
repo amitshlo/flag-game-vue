@@ -5,13 +5,13 @@
 <script>
 export default {
   name: 'Flag',
-  props: ['flagStyle'],
+  props: ['flagStyle', 'flagColor'],
   data () {
     return {
       initPos: {
         top: this.flagStyle.top + 'px',
         left: this.flagStyle.left + 'px',
-        background: this.flagStyle.color
+        background: this.flagColor
       }
     }
   },

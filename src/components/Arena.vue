@@ -4,23 +4,27 @@
     <div class="arena" v-bind:style="arenaSize">
       <vue-flag v-for="flag in flags"
         v-bind:flagStyle="flag"
-        :key="flag.id">
+        v-bind:flagColor="flag.color"
+        :key="flag.id + flag.color">
       </vue-flag>
       <vue-player 
         v-bind:initTop="'50px'" 
         v-bind:initLeft="'100px'"
         v-bind:color="'blue'"
-        v-bind:arenaSize="arenaSize"
         v-bind:controls="['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft']"
-        v-on:moved="moved">
+        v-bind:rules="rules"
+        v-bind:human="true"
+        v-on:hit="hit">
       </vue-player>
       <vue-player 
         v-bind:initTop="'200px'" 
         v-bind:initLeft="'300px'"
         v-bind:color="'green'"
-        v-bind:arenaSize="arenaSize"
         v-bind:controls="['KeyW', 'KeyD', 'KeyS', 'KeyA']"
-        v-on:moved="moved">
+        v-bind:rules="rules"
+        v-bind:human="false"
+        v-bind:strategy="strategies[0]"
+        v-on:hit="hit">
       </vue-player>
     </div>
   </div>
@@ -29,32 +33,42 @@
 <script>
 import Player from './Player'
 import Flag from './Flag'
+import { Rules } from '../services/rules'
+import { AIStupidStrategy } from '../services/strategies/ai-stupid'
+
+var arena = 400
 
 export default {
   name: 'Arena',
   data () {
     return {
       arenaSize: {
-        width: '400px',
-        height: '400px'
+        width: arena + 'px',
+        height: arena + 'px'
       },
       flags: [
         {id: 1, top: 50, left: 100, color: 'gray'},
         {id: 2, top: 200, left: 250, color: 'gray'}
-      ]
+      ],
+      strategies: [
+        new AIStupidStrategy()
+      ],
+      rules: undefined
     }
   },
-  created: function () {},
+  created: function () {
+    this.rules = new Rules(arena, this.flags, 50)
+  },
   methods: {
-    moved: function (event) {
-      var flagTop = 50
-      var flagLeft = 100
-      var flagSize = 50
-      if (event.newTop > flagTop && event.newLeft > flagLeft &&
-        (flagLeft + flagSize) > (event.newLeft + event.size) &&
-        (flagTop + flagSize) > (event.newTop + event.size)) {
-        console.log('on it!')
-      }
+    hit: function (event) {
+      let choosenFlag = undefined
+      this.flags = this.flags.filter((flag) => {
+        if (flag.id === event.id) {
+          choosenFlag = flag
+        }
+        return flag.id !== event.id
+      })
+      this.flags.push(Object.assign({}, choosenFlag, {color: event.color}))
     }
   },
   components: {

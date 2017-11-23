@@ -7,7 +7,7 @@ var size = 30
 
 export default {
   name: 'Player',
-  props: ['initTop', 'initLeft', 'controls', 'arenaSize', 'color'],
+  props: ['initTop', 'initLeft', 'controls', 'color', 'rules', 'human', 'strategy'],
   data () {
     return {
       plStyle: {
@@ -23,6 +23,16 @@ export default {
   },
   created: function () {
     window.addEventListener('keydown', this.run)
+    if (!this.human) {
+      let stInterval
+      setInterval(() => {
+        clearInterval(stInterval)
+        let moveDir = this.strategy.getMoveDir()
+        stInterval = setInterval(() => {
+          this.move(this.$refs.player, moveDir.top, moveDir.left)
+        }, 10)
+      }, this.strategy.getAskTime())
+    }
   },
   methods: {
     run: function (event) {
@@ -50,28 +60,23 @@ export default {
     },
     move: function (playerRef, top, left) {
       var newTop = playerRef.offsetTop + top
-      if (newTop < (this.arenaHeight - size) && newTop > 0) {
-        playerRef.style.top = (playerRef.offsetTop + top) + 'px'
+      if (this.rules.isInArena(newTop, size)) {
+        playerRef.style.top = newTop + 'px'
       } else {
         clearInterval(this.intervalId)
       }
 
       var newLeft = playerRef.offsetLeft + left
-      if (newLeft < (this.arenaWidth - size) && newLeft > 0) {
+      if (this.rules.isInArena(newLeft, size)) {
         playerRef.style.left = newLeft + 'px'
       } else {
         clearInterval(this.intervalId)
       }
 
-      this.$emit('moved', { newTop, newLeft, size, color: this.color })
-    }
-  },
-  computed: {
-    arenaHeight: function () {
-      return parseInt(this.arenaSize.height.slice(0, -2))
-    },
-    arenaWidth: function () {
-      return parseInt(this.arenaSize.height.slice(0, -2))
+      let hit = this.rules.isOnFlag(newTop, newLeft, size, this.color)
+      if (hit) {
+        this.$emit('hit', {id: hit.id, color: this.color})
+      }
     }
   }
 }
