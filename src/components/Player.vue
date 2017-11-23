@@ -22,6 +22,8 @@ export default {
     }
   },
   created: function () {
+    this.$store.commit('createUser', {top: this.initTop, left: this.initLeft, color: this.color})
+    console.log(this.$store.getters.getUsersLocation)
     if (!this.human) {
       let stInterval
       setInterval(() => {

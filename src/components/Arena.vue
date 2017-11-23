@@ -54,6 +54,8 @@ import Flag from './Flag'
 import { Rules } from '../services/rules'
 import { AIStupidStrategy } from '../services/strategies/ai-stupid'
 import { AISmartStrategy } from '../services/strategies/ai-smart'
+import { AISuperSmartStrategy } from '../services/strategies/ai-super-smart'
+
 
 var arena = 400
 
@@ -78,7 +80,7 @@ export default {
   created: function () {
     this.strategies = [
       new AIStupidStrategy(),
-      new AISmartStrategy(this.flags)
+      new AISmartStrategy(this.flags),
     ]
     this.rules = new Rules(arena, this.flags, 50)
   },
@@ -114,7 +116,6 @@ export default {
   }
 
   .arena {
-
     position: relative;
     background: #cdcdcd;
   }
